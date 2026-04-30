@@ -11,11 +11,15 @@ runs-on: ubuntu-latest
 
 ```
 steps:
-  - uses: actions/checkout@v4
+  - name: Checkout
+    uses: actions/checkout@v4
 
-  - run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+  - name: Login to Docker Hub
+    run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-  - run: docker build -t ${{ secrets.DOCKER_USERNAME }}/my-app:${{ github.ref_name }} .
+  - name: Build Image
+    run: docker build -t ${{ secrets.DOCKER_USERNAME }}/my-app:${{ github.ref_name }} .
 
-  - run: docker push ${{ secrets.DOCKER_USERNAME }}/my-app:${{ github.ref_name }}
+  - name: Push Image
+    run: docker push ${{ secrets.DOCKER_USERNAME }}/my-app:${{ github.ref_name }}
 ```
